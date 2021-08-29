@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>ShareDeed | Editor</title>
+<style type="text/css" media="screen">
+*{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+   
+}
+body{
+    background: #000;
+}
+    #editor { 
+        /* position: absolute; */
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 92.5vh;
+     
+    }
+    ::-webkit-scrollbar {
+  width: 4px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey; 
+  border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background:#323232; 
+  border-radius: 10px;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: white; 
+}
+
+    /* The side navigation menu */
+.message {
+  height: 80vh; /* 100% Full-height */
+  width: 300px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  bottom: 0; /* Stay at the top */
+  right: -500px;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: hidden;
+  padding: 10px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+}
+#message-box{
+  display: none;
+  height: 60vh;
+  overflow-y: auto;
+}
+#send-box{
+  display: none;
+}
+.message-user{
+  padding-bottom:5px;
+  font-size: 13px;
+  color: #818181;
+  margin: 0px 5px;
+  display: block;
+}
+.chat-message{
+    background-color: white;
+    width: 50%;
+    padding: 4px;
+    font-size: 14px;
+    margin: 5px 5px;
+    overflow-wrap: break-word;
+    border-radius: 9px;
+}
+#chat-box{
+  padding: 5px 5px;
+  background: transparent;
+  color: white;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid white;
+}
+
+.left{
+float: left;
+clear: both;
+}
+.right{
+float: right;
+clear: both;
+}
+
+
+/* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+@media screen and (max-height: 450px) {
+  .message {padding-top: 15px;}
+  .message a {font-size: 18px;}
+}
+
+
+</style>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+            <div class="container-fluid">
+              <a class="navbar-brand" style="font-weight: 700;" href="#">ShareDeed</a>
+                <input class="form-control ms-auto" id="title" style="width: 250px; background: transparent;border: none; border-bottom: 1px solid white; color: white;" type="text" placeholder="Document Name" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Enter your Document name" onblur="changetitle()"  >
+                <input type="text" class="form-control" style="width: 100px; background: transparent;border: none;  color: white;" id="extension" value=".c" data-bs-toggle="tooltip" data-bs-placement="bottom" title="File Extension" onblur="changeExtension()" >
+                <ul class="navbar-nav  mb-2 mb-lg-0 ms-auto ">
+                    <li >
+                        <a class="nav-link"  href="/create/newroom" ><i class="fas fa-plus-square" data-bs-toggle="tooltip" data-bs-placement="bottom" title="create new page"></i></a>
+                      </li>
+                      <li >
+                        <a class="nav-link"  href="#" ><i class="fas fa-download" data-bs-toggle="tooltip" data-bs-placement="bottom" title="download" onclick="download_file()"  ></i></a>
+                      </li>  
+                  <li >
+                    <a class="nav-link"><i class="far fa-share-square" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Share" onclick="share_code()" onmouseout="outFunc()" id="share" ></i></a>
+                  </li>
+                  <li >
+                    <a class="nav-link"  href="#"><i class="fas fa-video"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Start Video Chat"></i></a>
+                  </li>
+                  <li>
+                    <a class="nav-link"><i class="fas fa-comment-alt" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat" onclick="openNav()" ></i></a>
+                  </li>
+
+                  <li >
+                    <button type="button" style="background: transparent; border: none; outline: none; " class="nav-link" data-bs-toggle="modal" data-bs-target="#exampleModal"><i class="fas fa-cog"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Settings"></i></button>
+                  </li>
+                </ul>
+            </div>
+          </nav>
+    
+    <div id="editor">  <%= codecontent %> </div>
+
+    <div id="mySidenav" class="message">
+      <div id="message-box">
+        <div class="message-user left">piyushgupta</div>
+        <div class="chat-message left">Hello dear</div>
+        <div class="message-user right">nityadutta</div>
+        <div class="chat-message right">Hello dear</div>
+      </div>
+      <div id="send-box" style=" bottom: 0; margin: 30px 0px; position: fixed;">
+        <form method="post" id="send-message">
+          <input type="text" placeholder="Enter your message" id="chat-box" autocomplete="off" >
+          <button type="submit" style="background: transparent; outline: none; border: none; color: white;"><i class="fas fa-paper-plane"></i></button>
+        </form>
+      </div>
+    </div> 
+
+
+
+    <!--Setting Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="d-flex align-items-start">
+                <div class="nav flex-column nav-pills me-3" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                  <button class="nav-link active" id="v-pills-editor-setting-tab" data-bs-toggle="pill" data-bs-target="#v-pills-editor-setting" type="button" role="tab" aria-controls="v-pills-editor-setting" aria-selected="true">Editor Setting</button>
+                 <% if(admin){ %>  <button class="nav-link" id="v-pills-admin-setting-tab" data-bs-toggle="pill" data-bs-target="#v-pills-admin-setting" type="button" role="tab" aria-controls="v-pills-admin-setting" aria-selected="false">Admin Setting</button> <% } %>
+                  
+                </div>
+                <div class="tab-content" id="v-pills-tabContent">
+                  <div class="tab-pane fade show active" id="v-pills-editor-setting" role="tabpanel" aria-labelledby="v-pills-editor-setting-tab">
+                    <label for="theme" class="form-label">Theme: </label>
+                    <select class="form-select" id="theme" aria-label="Default select example" onchange="changeTheme()"  >
+                        <option selected>dracula</option>
+                        <option value="ambiance">ambiance</option>
+                        <option value="chaos">chaos</option>
+                        <option value="clouds">clouds</option>
+                        <option value="cobalt">cobalt</option>
+                        <option value="dawn">dawn</option>                  
+                        <option value="eclipse">eclipse</option>
+                        <option value="gob">gob</option>
+                        <option value="github">github</option>
+                        <option value="iplastic">iplastic</option>
+                        <option value="kuroir">kuroir</option>
+                        <option value="merbivore">merbivore</option>
+                        <option value="mono_industrial">mono industrial</option>
+                        <option value="monokai">monokai</option>
+                        <option value="nord_dark">nord dark</option>
+                        <option value="one_dark">one dark</option>                        
+                        <option value="solarized_dark">solarized dark</option>
+                        <option value="solarized_light">solarized light</option>
+                        <option value="terminal">terminal</option>
+                        <option value="textmate">textmate</option>
+                        <option value="tomorrow">tomorrow</option>
+                        <option value="tomorrow_night">tomorrow night</option>
+                        <option value="tomorrow_night_blue">tomorrow night blue</option>
+                        <option value="tomorrow_night_bright">tomorrow night bright</option>
+                        <option value="tomorrow_night_eighties">tomorrow night eighties</option>
+                        <option value="twilight">twilight</option>
+                        <option value="xcode">xcode</option>
+                      </select>
+                        <br>
+                      <label for="tab-size" class="form-label">Tab Size: </label>
+                    <select class="form-select" id="tab-size" aria-label="Default select example" onchange="changetabSize()" >
+                        <option value="2" selected >2</option>
+                        <option value="4">4</option>
+                        <option value="6">6</option>
+                        <option value="8">8</option>
+                      </select>
+                      <br>
+                      <label for="syntax" class="form-label">Syntax: </label>
+                    <select class="form-select" id="syntax" aria-label="Default select example" onchange="changeMode()" >
+                        <option selected value="objectivec">C</option>
+                        <option value="c_cpp">C++</option>
+                        <option value="csharp">csharp</option>
+                        <option value="css">css</option>
+                        <option value="dart">dart</option>
+                        <option value="django">django</option>
+                        <option value="ejs">ejs</option>
+                        <option value="gitignore">gitignore</option>
+                        <option value="golang">golang</option>
+                        <option value="handlebars">handlebar</option>
+                        <option value="html">html</option>
+                        <option value="java">java</option>
+                        <option value="javascript">javascript</option>
+                        <option value="json">json</option>
+                        <option value="jsx">jsx</option>
+                        <option value="kotlin">kotlin</option>
+                        <option value="matlab">matlab</option>
+                        <option value="mysql">mysql</option>
+                        <option value="perl">perl</option>
+                        <option value="php">php</option>
+                        <option value="plain_text">plain text</option>
+                        <option value="python">python</option>
+                        <option value="ruby">ruby</option>
+                        <option value="sass">sass</option>
+                        <option value="scala">scala</option>
+                        <option value="scss">scss</option>
+                        <option value="sql">sql</option>
+                        <option value="swift">swift</option>
+                        <option value="typescript">typescript</option>
+                        <option value="xml">xml</option>
+              
+                      </select>
+                  </div>
+                  <% if(admin) { %>
+                  <div class="tab-pane fade" id="v-pills-admin-setting" role="tabpanel" aria-labelledby="v-pills-admin-setting-tab">Admin Setting Page</div>
+                  <% } %>
+                </div>
+              </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+  return new bootstrap.Tooltip(tooltipTriggerEl)
+})
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/dracula");
+    editor.session.setMode("ace/mode/java");
+    editor.setReadOnly(false);
+
+  var doc_title;
+  var ext=document.getElementById('extension').value;
+
+  var extensions={
+    "objectivec": ".c",
+    "c_cpp":".cpp",
+    "csharp":".cs",
+    "css":".css",
+    "dart":".dart",
+    "django":".py",
+    "ejs":".ejs",
+    "gitignore":".gitignore",
+    "golang":".go",
+    "handlebars":".hbs",
+    "html":".html",
+    "java":".java",
+    "javascript":".js",
+    "json":".json",
+    "jsx":".jsx",
+    "kotlin":".kt",
+    "matlab":".mat",
+    "mysql":".frm",
+    "perl":".perl",
+    "php":".php",
+    "plain_text":".txt",
+    "python":".py",
+    "ruby":".ruby",
+    "sass":".sass",
+    "scala":".scala",
+    "scss":".scss",
+    "sql":".sql",
+    "swift":".swift",
+    "typescript":".ts",
+    "xml":".xml",
+  }
+
+  var admin='<%= admin %>';
+
+    
+
+  const roomid= '<%= roomid %>';
+  const username= '<%= username %>';
+
+  const socket=io();
+
+  socket.emit('join-room',{roomid,username});
+
+  let allowed=true;
+
+  socket.on("code",(data)=>{
+    allowed=false;
+    editor.setValue(data);
+    allowed=true;
+  });
+
+  editor.on("change",(e)=>{
+    console.log(editor.getValue());
+    if(allowed){
+      socket.emit('code-change', { code: editor.getValue(), roomid });
+    }
+  });
+
+  socket.on('new-user',(data)=>{
+    alert(`${data} has joined the chat`);
+  });
+
+  function changeTheme(){
+        var theme=document.getElementById('theme').value;
+        editor.setTheme(`ace/theme/${theme}`);
+    }
+
+    function changetabSize(){
+      var tabsize=document.getElementById('tab-size').value;
+      editor.session.setTabSize(tabsize);
+    }
+
+    function changetitle(){
+      var title=document.getElementById('title').value;
+       doc_title=title;
+       if(admin==='true'){
+         socket.emit('changed-title',{title,roomid});
+       }
+    }
+
+    socket.on('title-change',(title)=>{
+      document.getElementById('title').value=title;
+       doc_title=title;
+    })
+
+    function changeMode(){
+      var syntax=document.getElementById('syntax').value;
+      ext=extensions[syntax];
+      document.getElementById('extension').value=ext;
+      editor.session.setMode(`ace/mode/${syntax}`);
+       if(admin==='true'){
+            socket.emit('changed-mode',{syntax,roomid});
+       }
+    }
+
+    socket.on('mode-change',(syntax)=>{
+      document.getElementById('syntax').value=syntax;
+      ext=extensions[syntax];
+      document.getElementById('extension').value=ext;
+      editor.session.setMode(`ace/mode/${syntax}`);
+    })
+    
+    function changeExtension(){
+      ext=document.getElementById('extension').value;
+      if(admin==='true'){
+            // I will do it later
+      }
+      
+    }
+    
+    function share_code(){
+    var copyText = window.location.href;
+    navigator.clipboard.writeText(copyText);
+    document.getElementById('share').setAttribute('data-bs-original-title', 'Link Copied!');
+    let btn_tooltip = bootstrap.Tooltip.getInstance(document.getElementById('share'));
+    btn_tooltip.show();
+    }
+    function outFunc(){
+      document.getElementById('share').setAttribute('data-bs-original-title', 'Share');
+    }
+
+    function download_file(){
+      if(doc_title!=undefined && doc_title.length>0){
+      var text=editor.getValue();
+      var filename=doc_title+ext;
+      var element = document.createElement('a');
+      element.setAttribute('href','data:text/plain;charset=utf-8, ' + encodeURIComponent(text));
+      element.setAttribute('download', filename);
+      document.body.appendChild(element);
+      element.click();
+    }
+    else{
+          alert("Please give document name");
+    }
+  }
+
+  /* Set the width of the side navigation to 250px */
+function openNav() {
+  if(document.getElementById("mySidenav").style.right === "0px"){
+    document.getElementById('message-box').style.display="none";
+    document.getElementById('send-box').style.display="none";
+    // document.getElementById("mySidenav").style.width = "0";
+    document.getElementById("mySidenav").style.right= "-500px";
+  }
+  else{
+    document.getElementById("mySidenav").style.right= "0px";
+    document.getElementById('message-box').style.display="block";
+    document.getElementById('send-box').style.display="block";
+  
+  }
+}
+
+document.getElementById('send-message').addEventListener('submit',(e)=>{
+  e.preventDefault();
+  var mymessage=document.getElementById('chat-box').value;
+  if(mymessage.length<1){
+    return;
+  }
+  document.getElementById('chat-box').value="";
+  append(username,mymessage,'right');
+  socket.emit('send',({ message: mymessage, roomid, username }));
+  
+
+});
+
+socket.on('receive',({data,user})=>{
+  append(user,data,'left');
+})
+
+function append(user,data,position){
+  const messageElement= document.createElement('div');
+  const messageElement1= document.createElement('div');
+    messageElement.innerHTML=user;
+    messageElement.classList.add("message-user");
+    messageElement.classList.add(position); 
+    messageElement1.innerHTML=data;
+    messageElement1.classList.add("chat-message");
+    messageElement1.classList.add(position);
+    document.getElementById('message-box').append(messageElement);
+    document.getElementById('message-box').append(messageElement1);
+    var messageBody = document.querySelector('#message-box');
+messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
+    
+}
+
+   
+
+</script>
+</body>
+</html>

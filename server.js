@@ -5,11 +5,16 @@ const cookieParser = require('cookie-parser');
 const app=express();
 const server=require("http").Server(app);
 const io=require("socket.io")(server);
+const { ExpressPeerServer }=require('peer');
+const peerServer=ExpressPeerServer(server,{
+  debug: true
+});
 
 require('./config/db')();
 
 
-
+// PeerJS middleware
+app.use('/peerjs',peerServer);
 
 // cookie middleware
 app.use(cookieParser());
@@ -46,23 +51,35 @@ io.on("connection",(socket)=>{
     socket.room=roomid;
     socket.nickname=username;
     socket.in(roomid).emit("new-user",username);
+    
+    socket.on('join-peer',(roomid,id)=>{
+      console.log(`Room id: ${roomid} and id: ${id}`);
+      socket.to(roomid).emit('user-connected',{id,username});
+  
+      socket.on('disconnect',()=>{
+        socket.to(roomid).emit('user-disconnected',username);
+      })
+    })
+  
+    socket.on('code-change',({code,roomid})=>{
+        socket.in(roomid).emit('code',code);
+    })
+    socket.on('changed-title',({title,roomid})=>{
+        socket.in(roomid).emit('title-change',title);
+    });
+  
+    socket.on('changed-mode',({syntax,roomid} )=>{
+       socket.in(roomid).emit('mode-change',syntax);
+    });
+  
+    socket.on('send',({message,roomid,username})=>{
+        socket.in(roomid).emit('receive',{ data:message ,user: username  })
+    });
+    
+
   });
 
-  socket.on('code-change',({code,roomid})=>{
-      socket.in(roomid).emit('code',code);
-  })
-  socket.on('changed-title',({title,roomid})=>{
-      socket.in(roomid).emit('title-change',title);
-  });
-
-  socket.on('changed-mode',({syntax,roomid} )=>{
-     socket.in(roomid).emit('mode-change',syntax);
-  });
-
-  socket.on('send',({message,roomid,username})=>{
-      socket.in(roomid).emit('receive',{ data:message ,user: username  })
-  })
-
+  
 
 
 })

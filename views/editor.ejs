@@ -97,6 +97,52 @@ float: right;
 clear: both;
 }
 
+.peoples {
+  height: 80vh; /* 100% Full-height */
+  width: 300px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  bottom: 0; /* Stay at the top */
+  right: -500px;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: auto;
+  padding: 10px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  color: white;
+  text-align: center;
+}
+.people-l{
+  margin: 15px;
+  font-size: 15px;
+}
+
+.videonav {
+  height: 80vh; /* 100% Full-height */
+  width: 300px; /* 0 width - change this with JavaScript */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Stay on top */
+  bottom: 0; /* Stay at the top */
+  right: -500px;
+  background-color: #111; /* Black*/
+  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-y: auto;
+  padding: 10px; /* Place content 60px from the top */
+  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  color: white;
+  text-align: center;
+}
+
+#myvideo{
+  display: none;
+  transition: 0.6s;
+   height: 214px;
+}
+#mypvideo{
+  height: 150px;
+  width: 200px;
+  background: #323232;
+}
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
@@ -126,10 +172,13 @@ clear: both;
                     <a class="nav-link"><i class="far fa-share-square" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Share" onclick="share_code()" onmouseout="outFunc()" id="share" ></i></a>
                   </li>
                   <li >
-                    <a class="nav-link"  href="#"><i class="fas fa-video"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Start Video Chat"></i></a>
+                    <a class="nav-link"  href="#"><i class="fas fa-video"  data-bs-toggle="tooltip" data-bs-placement="bottom" title="Start Video Chat" onclick="openvideonav()" ></i></a>
                   </li>
                   <li>
                     <a class="nav-link"><i class="fas fa-comment-alt" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Chat" onclick="openNav()" ></i></a>
+                  </li>
+                  <li>
+                    <a class="nav-link"><i class="fas fa-user-friends" data-bs-toggle="tooltip" data-bs-placement="bottom" title="People in call" onclick="openpeoplenav()" ></i></a>
                   </li>
 
                   <li >
@@ -150,7 +199,32 @@ clear: both;
           <button type="submit" style="background: transparent; outline: none; border: none; color: white;"><i class="fas fa-paper-plane"></i></button>
         </form>
       </div>
+    </div>
+
+
+    <div id="peoplenav" class="peoples">
+        <div style="text-align: center; font-weight: 800;  ">Active People</div>
+        <hr>
+        <br>
+        <div id="people-list" >
+           <div class="people-l" >piyushgupta</div>
+           <div class="people-l">piyushgupta</div>
+           <div class="people-l">piyushgupta</div>
+        </div>
+
     </div> 
+
+    <div id="videonav" class="videonav">
+  
+    </div>
+
+    <div id="myvideo" style="position: fixed; bottom: 20px; right: 0;  background: black; color: white; text-align: center;height: 214px; ">
+      <div ><i id="microphone" class="fas fa-microphone-slash" style="margin-top: 10px; margin-left: 10px;" onclick="changemicrophone()" ></i> &nbsp; <i id="camera" class="fas fa-video-slash" style="margin-top: 10px; margin-left: 10px; " onclick="changecamera()" ></i> <a  style="margin-top: 10px; margin-left: 15px; color: white; background: red; padding: 5px 5px; font-weight: 700;border-radius: 25px; ">End call</a> </div>
+      <hr>
+      <div id="video-personal" >
+          <video id="mypvideo"></video>
+      </div>
+    </div>
 
 
 
@@ -260,6 +334,7 @@ clear: both;
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script> 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script>
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
@@ -310,9 +385,12 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   var admin='<%= admin %>';
 
     
-
+   var playvideochat=0;
   const roomid= '<%= roomid %>';
   const username= '<%= username %>';
+  
+  var cam=false;
+  var mic=false;
 
   const socket=io();
 
@@ -418,14 +496,50 @@ function openNav() {
     document.getElementById('send-box').style.display="none";
     // document.getElementById("mySidenav").style.width = "0";
     document.getElementById("mySidenav").style.right= "-500px";
+    document.getElementById('myvideo').style.marginRight="0px";
   }
   else{
+    document.getElementById("videonav").style.right= "-500px";
+    document.getElementById("peoplenav").style.right= "-500px";
     document.getElementById("mySidenav").style.right= "0px";
     document.getElementById('message-box').style.display="block";
     document.getElementById('send-box').style.display="block";
+    document.getElementById('myvideo').style.marginRight="300px";
+
   
   }
 }
+
+function openpeoplenav() {
+  if(document.getElementById("peoplenav").style.right === "0px"){
+    document.getElementById("peoplenav").style.right= "-500px";
+    document.getElementById('myvideo').style.marginRight="0px";
+  }
+  else{
+    document.getElementById("videonav").style.right= "-500px";
+    document.getElementById("mySidenav").style.right= "-500px";
+    document.getElementById("peoplenav").style.right= "0px";
+    document.getElementById('myvideo').style.marginRight="300px";  
+  }
+}
+
+function openvideonav() {
+  if(document.getElementById("videonav").style.right === "0px"){
+    document.getElementById("videonav").style.right= "-500px";
+    document.getElementById('myvideo').style.marginRight="0px";
+  }
+  else{
+    document.getElementById('myvideo').style.display="block";
+    document.getElementById("peoplenav").style.right= "-500px";
+    document.getElementById("mySidenav").style.right= "-500px";
+    document.getElementById("videonav").style.right= "0px"; 
+    document.getElementById('myvideo').style.marginRight="300px"; 
+    if(playvideochat==0){
+      
+    }
+  }
+}
+
 
 document.getElementById('send-message').addEventListener('submit',(e)=>{
   e.preventDefault();
@@ -459,6 +573,125 @@ function append(user,data,position){
 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     
 }
+
+function changemicrophone(){
+  if(mic){
+    mic=false;
+    document.getElementById('microphone').classList.remove('fa-microphone');
+    document.getElementById('microphone').classList.add('fa-microphone-slash');
+  }
+  else{
+    mic=true;
+    document.getElementById('microphone').classList.remove('fa-microphone-slash');
+    document.getElementById('microphone').classList.add('fa-microphone');
+    
+  }
+}
+
+function changecamera(){
+  if(cam){
+    cam=false;
+    document.getElementById('camera').classList.remove('fa-video');
+    document.getElementById('camera').classList.add('fa-video-slash');
+  }
+  else{
+    cam=true;
+    document.getElementById('camera').classList.remove('fa-video-slash');
+    document.getElementById('camera').classList.add('fa-video');
+    
+  }
+}
+
+const peer=new Peer(undefined,{
+  path: '/peerjs',
+  host: '/',
+  port: '8000'
+});
+
+
+const videoPersonal = document.getElementById("video-personal");
+const videoList=document.getElementById('videonav');
+const myVideo = document.getElementById('mypvideo');
+// myVideo.style.height="150px";
+// myVideo.style.width="200px";
+myVideo.muted = true;
+
+navigator.mediaDevices.getUserMedia({
+      audio: true,
+      video: true
+      })
+      .then(stream=>{
+        myVideo.srcObject=stream;
+    console.log("hello");
+    myVideo.addEventListener('loadedmetadata',()=>{
+      myVideo.play();
+    });
+    videoPersonal.append(myVideo);
+
+    peer.on('call',call=>{
+      call.answer(stream);
+      const video=document.createElement('video');
+      call.on('stream',userVideoStream=>{
+        video.srcObject=userVideoStream;
+         video.style.height="200px";
+         video.style.width="200px";
+         video.addEventListener('loadedmetadata',()=>{
+           video.play();
+         });
+         videoList.append(video);
+      })
+    })
+
+    socket.on('user-connected',({id,username})=>{
+      alert(id+username);
+      connectToNewUser(id,username,stream);
+    })
+      
+    });
+
+
+function playvideo(stream){
+  console.log(stream);
+  
+}
+
+
+function connectToNewUser(id,username,stream){
+  alert("hola");
+   const call=peer.call(id,stream);
+   const video=document.createElement('video');
+   call.on('stream',userVideoStream=>{
+         video.srcObject=userVideoStream;
+         video.setAttribute('id',username);
+         video.style.height="200px";
+         video.style.width="200px";
+         video.addEventListener('loadedmetadata',()=>{
+           video.play();
+         });
+         videoList.append(video);
+   });
+   call.on('close',()=>{
+       alert('hello');
+   })
+
+}
+
+
+
+socket.on('user-disconnected',username=>{
+   var element=document.getElementById(`${username}`);
+   videoList.removeChild(element);
+})
+
+
+
+
+peer.on('open', id => {
+  socket.emit('join-peer',roomid,id);
+});
+
+
+
 
    
 

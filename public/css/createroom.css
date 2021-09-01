@@ -1,0 +1,48 @@
+body{
+    text-align: center;
+    background-color: black;
+}
+h2{
+    line-height: 1.5;
+}
+.title-heading-div{
+    color: white;
+}
+.outer-div{
+    padding: 10% 0;
+}
+.room-image-div{
+    text-align: center;
+}
+.room-image{
+    height: auto;
+    width: 20%;
+}
+.create-button{
+    text-align: center;
+}
+.footer{
+    color:#fff;
+     background-color: #000;
+    padding: 0.5rem;
+      bottom: 0;
+      margin-top: 2rem;
+}
+
+@media all and (min-width:770px){
+    h2{
+        padding-left: 2rem;
+    }
+}
+@media all and (max-width: 770px){
+    h2{
+        line-height: 2;
+    }
+    .title-heading-div{
+        padding-bottom: 5%;
+    }
+    .create-button{
+        padding-top: 1rem;
+    }
+
+}

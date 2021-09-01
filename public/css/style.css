@@ -59,8 +59,14 @@ input {
 
 /* Features Section */
 .features-section{
+  background-color: black;
+  color: #fff;
   padding: 7% 4%;
   text-align: center;
+}
+
+.features-row{
+  margin: 5rem auto;
 }
 
 .card{
@@ -69,16 +75,13 @@ input {
   margin: 2%;
   background-color: black;
   color: #fff;
-  /* border-radius: 5%; */
   }
 
 .card-img-top{
   border-radius: 100%;
   position: relative;
-  width: 50%;
-  margin: 2rem auto;
+  width: 30%;
   background-color: black;
-  /* border-radius: 5%; */
 }
 
 .footer{
@@ -212,7 +215,6 @@ form.sign-in-form {
 
 .btn {
   width: 150px;
-  /* background-color: #5995fd; */
   background-color: #000;
   border: none;
   outline: none;
@@ -247,7 +249,6 @@ form.sign-in-form {
   top: -10%;
   right: 48%;
   transform: translateY(-50%);
-  /* background-image: linear-gradient(-45deg, #000 0%, #000 100%); */
   background-color: #000;
   transition: 1.8s ease-in-out;
   border-radius: 50%;
@@ -481,21 +482,23 @@ form.sign-in-form {
 
 @media(max-width: 1000px){
   .title-heading{
-    /* padding-top: 4rem;
-    padding-bottom: 0; */
     padding: 4rem 2rem 0;
   }
   .heading-text{
     line-height: 2;
   }
-  #titleimg{
-    padding: 0;
+  #title-img{
+    padding-bottom: 0;
     margin-top: -4rem;
   }
   
   .card{
     margin: 2% auto;
   }
-  
+}
 
+@media all and (max-width: 575px){
+  .features-text{
+    margin-bottom: 2rem;
+  }
 }

@@ -7,12 +7,23 @@ const roomSchema=new mongoose.Schema({
         required: true,
         unique: true
     },
+    title:{
+       type: String
+    },
     content:{
         type: String
     },
     admin:{
         type: String,
         required: true
+    },
+    joined:[{
+        type: String,
+        required: true
+    }],
+    updatedby:{
+          type: String,
+          required: true
     }
 },{
     timestamps: true

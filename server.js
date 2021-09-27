@@ -5,6 +5,7 @@ const cookieParser = require('cookie-parser');
 const app=express();
 const server=require("http").Server(app);
 const io=require("socket.io")(server);
+const Room=require('./models/room');
 const { ExpressPeerServer }=require('peer');
 const peerServer=ExpressPeerServer(server,{
   debug: true
@@ -25,6 +26,7 @@ app.use(session({
 
 // Setting body-parser
 app.use(express.urlencoded({extended: true}));
+app.use(express.json());
 
 
 
@@ -51,9 +53,25 @@ io.on("connection",(socket)=>{
     socket.room=roomid;
     socket.nickname=username;
     socket.in(roomid).emit("new-user",username);
+    Room.findOne({roomid})
+    .then(roomdata=>{
+      // console.log(roomdata);
+      var found=false;
+      for(var i=0;i<roomdata.joined.length;i++){
+        if(roomdata.joined[i]==username){
+          found=true;
+        }
+      }
+      if(!found){
+        roomdata.joined.push(username);
+      }
+      roomdata.save();
+    })
+    .catch(err=>{
+      console.log(err);
+    })
     
     socket.on('join-peer',(roomid,id)=>{
-      console.log(`Room id: ${roomid} and id: ${id}`);
       socket.to(roomid).emit('user-connected',{id,username});
   
       socket.on('disconnect',()=>{

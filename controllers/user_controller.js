@@ -86,3 +86,36 @@ module.exports.logout=(req,res)=>{
     res.cookie('jwt','none');
     res.redirect('/');
 }
+
+
+
+// changing editor setting
+module.exports.change_editor_setting=async (req,res)=>{
+  const { theme, tabsize,fontsize }=req.body;
+  try{
+      
+    const userdata=await User.findOne({username: req.session.username});
+    if(userdata){
+       if(theme!='null'){
+           userdata.editor.theme=theme;
+       }
+       if(tabsize!='null'){
+           userdata.editor.tabsize=tabsize;
+       }
+       if(fontsize!='null'){
+           userdata.editor.fontsize=fontsize;
+       }
+       userdata.save();
+       return res.json({success: true});
+    }
+    else{
+        // ERROR
+        return res.json({success: false});
+    }
+    
+
+  }catch(err){
+        console.log(err);
+        return res.json({success: false});
+  }
+}

@@ -19,7 +19,21 @@ const userSchema=new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Room'
         }
-    ]
+    ],
+    editor:{
+        theme:{
+            type: String,
+            default: 'dracula'
+        },
+        tabsize:{
+            type: Number,
+            default: 2
+        },
+        fontsize:{
+            type: Number,
+            default: 12
+        }
+    }
 },{
     timestamps: true
 });

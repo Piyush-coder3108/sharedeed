@@ -156,6 +156,8 @@ clear: both;
 <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<!-- Noty css -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" />
 </head>
 <body>
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
@@ -206,18 +208,18 @@ clear: both;
 
 
     <div id="peoplenav" class="peoples">
-        <div style="text-align: center; font-weight: 800;  ">Active People</div>
+        <div style="text-align: center; font-weight: 800;  ">Active People &nbsp; <span id="user-number" style="font-size: 22px; font-weight: 900; color: greenyellow;" ><%= roomusers.length %> </span></div>
         <hr>
         <br>
         <div id="people-list" >
-           <div class="people-l" >piyushgupta</div>
-           <div class="people-l">piyushgupta</div>
-           <div class="people-l">piyushgupta</div>
+           <% for(var i=0;i<roomusers.length;i++){ %>
+            <div class="people-l"> <%= roomusers[i] %> </div>
+           <% } %>
         </div>
 
     </div> 
 
-    <div id="videonav" class="videonav">
+    <!-- <div id="videonav" class="videonav">
   
     </div>
 
@@ -227,7 +229,7 @@ clear: both;
       <div id="video-personal" >
           <video id="mypvideo"></video>
       </div>
-    </div>
+    </div> -->
 
 
 
@@ -365,6 +367,8 @@ clear: both;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js" integrity="sha512-GZ1RIgZaSc8rnco/8CXfRdCpDxRCphenIiZ2ztLy3XQfCbQUSCuk8IudvNHxkRA3oUg6q0qejgN/qqyG1duv5Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
+<!-- Noty js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous"></script>
 <script>
   var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -446,7 +450,15 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
   });
 
   socket.on('new-user',(data)=>{
-    alert(`${data} has joined the chat`);
+    if(data!==username){
+      new Noty({
+             theme: 'relax',
+             text: `${data} joined the room`,
+             type: 'alert',
+             layout: 'bottomLeft',
+             timeout: 1500
+            }).show();
+    }
   });
 
   function changeTheme(){
@@ -541,23 +553,28 @@ var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
           alert("Please give document name");
     }
   }
-
+var openchatbox=false;
   /* Set the width of the side navigation to 250px */
 function openNav() {
   if(document.getElementById("mySidenav").style.right === "0px"){
+    openchatbox=false;
     document.getElementById('message-box').style.display="none";
     document.getElementById('send-box').style.display="none";
     // document.getElementById("mySidenav").style.width = "0";
     document.getElementById("mySidenav").style.right= "-500px";
-    document.getElementById('myvideo').style.marginRight="0px";
+    // document.getElementById('myvideo').style.marginRight="0px";
   }
   else{
-    document.getElementById("videonav").style.right= "-500px";
+    // document.getElementById("videonav").style.right= "-500px";
+    openchatbox=true;
     document.getElementById("peoplenav").style.right= "-500px";
     document.getElementById("mySidenav").style.right= "0px";
-    document.getElementById('message-box').style.display="block";
+    setTimeout(()=>{
+      document.getElementById('message-box').style.display="block";
     document.getElementById('send-box').style.display="block";
-    document.getElementById('myvideo').style.marginRight="300px";
+    },400);
+    
+    // document.getElementById('myvideo').style.marginRight="300px";
 
   
   }
@@ -566,13 +583,15 @@ function openNav() {
 function openpeoplenav() {
   if(document.getElementById("peoplenav").style.right === "0px"){
     document.getElementById("peoplenav").style.right= "-500px";
-    document.getElementById('myvideo').style.marginRight="0px";
+    // document.getElementById('myvideo').style.marginRight="0px";
   }
   else{
-    document.getElementById("videonav").style.right= "-500px";
+    // document.getElementById("videonav").style.right= "-500px";
+    document.getElementById('message-box').style.display="none";
+    document.getElementById('send-box').style.display="none";
     document.getElementById("mySidenav").style.right= "-500px";
     document.getElementById("peoplenav").style.right= "0px";
-    document.getElementById('myvideo').style.marginRight="300px";  
+    // document.getElementById('myvideo').style.marginRight="300px";  
   }
 }
 
@@ -606,7 +625,12 @@ function savedoc(){
     alert("Please made some changes !!!!");
     return;
   }
-  window.removeEventListener('beforeunload',before_unload);
+
+  save_doc_api_call();
+  
+}
+
+async function save_doc_api_call(){
   const update = {
    'title': document.getElementById('title').value,
    'content': editor.getValue(),
@@ -619,17 +643,28 @@ headers: {
 },
 body: JSON.stringify(update),
 };
-fetch(`http://localhost:8000/editor/${roomid}/data`, options)
-  .then(data => {
-      console.log(data);
-      }).catch(e => {
-      console.log(e);
-      });
-
+const response=await fetch(`http://localhost:8000/editor/${roomid}/data`, options);
+const data=await response.json();
+window.removeEventListener('beforeunload',before_unload);
+if(data.success){
   
-    window.removeEventListener("beforeunload",before_unload);
- 
-
+  new Noty({
+             theme: 'relax',
+             text: "  Code saved successfully ",
+             type: 'success',
+             layout: 'topRight',
+             timeout: 1500
+            }).show();
+}
+else{
+  new Noty({
+             theme: 'relax',
+             text: "Server error try again later",
+             type: 'error',
+             layout: 'topRight',
+             timeout: 1500
+            }).show();
+}
 }
 
 
@@ -656,6 +691,15 @@ document.getElementById('send-message').addEventListener('submit',(e)=>{
 
 socket.on('receive',({data,user})=>{
   append(user,data,'left');
+  if(!openchatbox){
+    new Noty({
+             theme: 'relax',
+             text: `You have new message from ${user}`,
+             type: 'alert',
+             layout: 'bottomRight',
+             timeout: 1500
+            }).show();
+  }
 })
 
 function append(user,data,position){
@@ -673,6 +717,30 @@ function append(user,data,position){
 messageBody.scrollTop = messageBody.scrollHeight - messageBody.clientHeight;
     
 }
+
+socket.on('users-list',(list)=>{
+  document.getElementById('people-list').innerHTML="";
+  document.getElementById('user-number').innerText=list.length;
+  for(var i=0;i<list.length;i++){
+    const newdiv=document.createElement('div');
+    newdiv.classList.add('people-l');
+    newdiv.innerText=list[i];
+    document.getElementById('people-list').append(newdiv);
+  }
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // function changemicrophone(){
 //   if(mic){

@@ -6,16 +6,16 @@ const app=express();
 const server=require("http").Server(app);
 const io=require("socket.io")(server);
 const Room=require('./models/room');
-const { ExpressPeerServer }=require('peer');
-const peerServer=ExpressPeerServer(server,{
-  debug: true
-});
+// const { ExpressPeerServer }=require('peer');
+// const peerServer=ExpressPeerServer(server,{
+//   debug: true
+// });
 
 require('./config/db')();
 
 
 // PeerJS middleware
-app.use('/peerjs',peerServer);
+// app.use('/peerjs',peerServer);
 
 // cookie middleware
 app.use(cookieParser());
@@ -66,18 +66,20 @@ io.on("connection",(socket)=>{
         roomdata.joined.push(username);
       }
       roomdata.save();
+      io.in(roomid).emit('users-list',roomdata.joined);
+      // socket.to(socket.id).emit('users-list',roomdata.joined);
     })
     .catch(err=>{
       console.log(err);
     })
     
-    socket.on('join-peer',(roomid,id)=>{
-      socket.to(roomid).emit('user-connected',{id,username});
+    // socket.on('join-peer',(roomid,id)=>{
+    //   socket.to(roomid).emit('user-connected',{id,username});
   
-      socket.on('disconnect',()=>{
-        socket.to(roomid).emit('user-disconnected',username);
-      })
-    })
+    //   socket.on('disconnect',()=>{
+    //     socket.to(roomid).emit('user-disconnected',username);
+    //   })
+    // })
   
     socket.on('code-change',({code,roomid})=>{
         socket.in(roomid).emit('code',code);
@@ -93,6 +95,22 @@ io.on("connection",(socket)=>{
     socket.on('send',({message,roomid,username})=>{
         socket.in(roomid).emit('receive',{ data:message ,user: username  })
     });
+
+    socket.on('disconnect',()=>{
+      Room.findOne({roomid})
+    .then(roomdata=>{
+      // console.log(roomdata);
+      var index=roomdata.joined.indexOf(username);
+      if(index>-1){
+        roomdata.joined.splice(index,1);
+      }
+      roomdata.save();
+      socket.to(roomid).emit('users-list',roomdata.joined);
+    })
+    .catch(err=>{
+      console.log(err);
+    })
+    })
     
 
   });

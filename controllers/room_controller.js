@@ -26,7 +26,18 @@ module.exports.create_room=(req,res)=>{
                 updatedby: req.session.username
             });
             new_room.save();
-            return res.redirect(`/editor/${newroom}`);
+            User.findOne({username:req.session.username})
+            .then(user=>{
+                // console.log(user);
+                if(user){
+                    user.rooms.push(new_room._id);
+                }
+                user.save();
+                return res.redirect(`/editor/${newroom}`);
+            })
+            .catch(err=>console.log(err));
+            
+            
             
         } 
 
@@ -49,6 +60,7 @@ module.exports.retrieve_data=(req,res)=>{
     
     Room.findOne({roomid})
     .then(room=>{
+        // console.log(room);
         if(room){
             var x= (room.admin===req.session.username)? true: false;
             User.findOne({username: req.session.username})
@@ -62,7 +74,8 @@ module.exports.retrieve_data=(req,res)=>{
                     themes: require('../config/theme')  ,
                     theme: user.editor.theme,
                     tabsize: user.editor.tabsize,
-                    fontsize: user.editor.fontsize
+                    fontsize: user.editor.fontsize,
+                    roomusers: room.joined
                 });
             })
             .catch(err=>{
@@ -82,6 +95,7 @@ module.exports.retrieve_data=(req,res)=>{
         }
         else{
             // Sorry we are not recognising your room so we are creating new room
+            console.log("creating new room");
             return res.redirect('/create/newroom');
         }
     })

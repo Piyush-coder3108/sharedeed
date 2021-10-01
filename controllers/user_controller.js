@@ -63,7 +63,7 @@ module.exports.register=async (req,res)=>{
                 })
             });
              const token=jwt.sign({username: username},process.env.secret_key);
-             res.session.username=username;
+             req.session.username=username;
              res.cookie('jwt',token);
             // req.flash('success','You are now registered , Please login !!!!');
             return res.redirect(`/user/${username}`);
@@ -118,4 +118,26 @@ module.exports.change_editor_setting=async (req,res)=>{
         console.log(err);
         return res.json({success: false});
   }
+}
+
+
+module.exports.get_profile=(req,res)=>{
+    User.findOne({username: req.params.username })
+    .populate({
+        path:'rooms',
+    })
+    .exec((err,user)=>{
+        if(err){
+            console.log(err);
+
+        }
+        else{
+            // console.log(user);
+            return res.render('profile',{
+                name: user.name,
+                rooms: user.rooms
+            });
+        }
+    })
+    
 }

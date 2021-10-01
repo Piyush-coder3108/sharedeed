@@ -10,13 +10,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
     <link rel="stylesheet" href="/css/createroom.css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <!-- Noty css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" />
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container-fluid">
           <a class="navbar-brand" style="font-weight: 700;" href="/">ShareDeed</a>
           <ul class="nav mx-auto" >
-            <li class="nav-item" style="color: white;" style="width: 100px;">Hi, Piyush Gupta</li>
+            <li class="nav-item" style="color: white;" style="width: 100px;">Hi, <%= name %></li>
           </ul>
           
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -32,7 +35,7 @@
         </div>
       </nav>
       
-       <div class="container-fluid">
+       <div class="container-fluid" style="height: 270px;">
            <div class="row outer-div">
             <div class="col-lg-6 col-md-6 col-sm-12 title-heading-div">
                 <h2>
@@ -49,15 +52,65 @@
             <button type="button" class="btn btn-dark"><a href="/create/newroom" style="text-decoration: none; color: white;">Create Room <i class="fas fa-plus-square"></i> </a></button>
         </div>
      -->
-     
-
+     <br>
+        <div style="color: white;font-size: 26px;font-weight: 700;">Your's Code</div>
         <br>
+        <div class="container" style="color: white;border: 3px solid white;border-radius: 17px;width: 90vw;max-width: 600px; height: 200px; line-height: 200%; overflow-y: auto;">
+             <!-- <div>Hello</div>
+             <div>Hello</div>
+             <div>Hello</div>
+             <div>Hello</div>
+             <div>Hello</div>
+             <div>Hello</div>
+             <div>Hello</div> -->
+             <% if(rooms.length==0){ %>
+              <div>No code found , Please create code</div>
+              <% } else { %>
+               <% for(var i=0;i<rooms.length;i++) { %>
+                <% if(rooms[i].title.length==0){ %>
+                  <div> <%= i+1 %>&nbsp;)&nbsp;<a href="/editor/<%= rooms[i].roomid %>">Unnamed Document</a></div>
+                <% } else { %>
+                   <div><%= i+1 %>&nbsp;)&nbsp;<a href="/editor/<%= rooms[i].roomid %>"><%= rooms[i].title%></a></div>
+                <% } %>
+
+                <% } %>
+
+              <% } %>
+        </div>
+
+
     <footer class="footer">
       <div style="margin-bottom: 0; text-align: center;">Made with 🤍 by Piyush & Piyush Gupta</div>
     </footer>
 
     <!-- Bootstrap script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+
+    <!-- Noty js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous"></script>
+
+    <script>
+      // var flasherror='<%= flash.error %>';
+      //    if(flasherror && flasherror.length>0) { 
+      //    new Noty({
+      //        theme: 'relax',
+      //        text: "<%= flash.error %>",
+      //        type: 'error',
+      //        layout: 'topRight',
+      //        timeout: 1500
+      //       }).show();
+      //    } 
+      //    var flashsuccess='<%= flash.success %>';
+      //   if(flashsuccess && flashsuccess.length>0) { 
+      //    new Noty({
+      //        theme: 'relax',
+      //        text: "<%= flash.success %>",
+      //        type: 'success',
+      //        layout: 'topRight',
+      //        timeout: 1500
+      //       }).show();
+      //   } 
+    </script>
 
 </body>
 </html>

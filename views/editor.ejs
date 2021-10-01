@@ -643,7 +643,7 @@ headers: {
 },
 body: JSON.stringify(update),
 };
-const response=await fetch(`http://localhost:8000/editor/${roomid}/data`, options);
+const response=await fetch(`https://sharedeed.herokuapp.com/editor/${roomid}/data`, options);
 const data=await response.json();
 window.removeEventListener('beforeunload',before_unload);
 if(data.success){

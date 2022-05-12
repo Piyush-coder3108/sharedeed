@@ -3,7 +3,7 @@ const ShortUniqueueId=require('short-unique-id');
 
 const { login, register, logout, change_editor_setting, get_profile }=require('../controllers/user_controller');
 const { checkAuth, checkcookie } =require('../config/middleware');
-const { create_room, retrieve_data , save_data} =require('../controllers/room_controller');
+const { create_room, retrieve_data , save_data ,changeExtension } =require('../controllers/room_controller');
 
 
 const Router=express.Router();
@@ -36,6 +36,9 @@ Router.post('/editor/:roomid/data',checkAuth,save_data);
 Router.get('/user/:username',get_profile);
 
 Router.post('/change/editor/setting',checkAuth,change_editor_setting);
+
+// Editor Settings
+Router.post('/editor/:roomid/data/update/ext',checkAuth , changeExtension)
 
 
 module.exports=Router;

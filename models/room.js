@@ -24,6 +24,10 @@ const roomSchema=new mongoose.Schema({
     updatedby:{
           type: String,
           required: true
+    },
+    syntax:{
+        type: String,
+        default: 'objectivec'
     }
 },{
     timestamps: true

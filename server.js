@@ -6,6 +6,7 @@ const app=express();
 const server=require("http").Server(app);
 const io=require("socket.io")(server);
 const Room=require('./models/room');
+const cors=require('cors');
 // const { ExpressPeerServer }=require('peer');
 // const peerServer=ExpressPeerServer(server,{
 //   debug: true
@@ -27,12 +28,12 @@ app.use(session({
 // Setting body-parser
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-
+app.use(cors());
 
 
 
 // Serving static files
-const static_path=__dirname+'/public/';
+const static_path=__dirname+'/public';
 app.use(express.static(static_path));
 
 // Setting view engine
@@ -73,13 +74,6 @@ io.on("connection",(socket)=>{
       console.log(err);
     })
     
-    // socket.on('join-peer',(roomid,id)=>{
-    //   socket.to(roomid).emit('user-connected',{id,username});
-  
-    //   socket.on('disconnect',()=>{
-    //     socket.to(roomid).emit('user-disconnected',username);
-    //   })
-    // })
   
     socket.on('code-change',({code,roomid})=>{
         socket.in(roomid).emit('code',code);

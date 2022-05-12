@@ -51,7 +51,7 @@ module.exports.create_room=(req,res)=>{
 
 
 
-// Gettting Room Data
+// Getting Room Data
 module.exports.retrieve_data=(req,res)=>{
     const { roomid }=req.params;
     if(roomid.length!==10){
@@ -75,7 +75,8 @@ module.exports.retrieve_data=(req,res)=>{
                     theme: user.editor.theme,
                     tabsize: user.editor.tabsize,
                     fontsize: user.editor.fontsize,
-                    roomusers: room.joined
+                    roomusers: room.joined,
+                    syntax:room.syntax
                 });
             })
             .catch(err=>{
@@ -121,4 +122,21 @@ module.exports.retrieve_data=(req,res)=>{
     }
 
      
+ }
+
+
+ // Changing Room Extension
+ module.exports.changeExtension=async (req,res)=>{
+     const { extension }= req.body;
+     try{
+        const room=await Room.findOne({roomid: req.params.roomid});
+        if(room){
+           room.syntax=extension;
+           await room.save();
+           return res.json({success: true});
+        }
+       }catch(err){
+           return res.json({success: false});
+       }
+
  }

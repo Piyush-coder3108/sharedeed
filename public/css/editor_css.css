@@ -1,0 +1,197 @@
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+
+  }
+
+  body {
+    background: #000;
+  }
+
+  #editor {
+    /* position: absolute; */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 92.5vh;
+
+  }
+
+  ::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 5px grey;
+    border-radius: 10px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #323232;
+    border-radius: 10px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: white;
+  }
+
+  /* For extension */
+  #extension{
+    font-size: 21px;
+    font-weight: 800;
+  }
+
+  /* The side navigation menu */
+  .message {
+    height: 80vh;
+    /* 100% Full-height */
+    width: 300px;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Stay on top */
+    bottom: 0;
+    /* Stay at the top */
+    right: -500px;
+    background-color: #111;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    overflow-y: hidden;
+    padding: 10px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidenav */
+  }
+
+  #message-box {
+    display: none;
+    height: 60vh;
+    overflow-y: auto;
+  }
+
+  #send-box {
+    display: none;
+  }
+
+  .message-user {
+    padding-bottom: 5px;
+    font-size: 13px;
+    color: #818181;
+    margin: 0px 5px;
+    display: block;
+  }
+
+  .chat-message {
+    background-color: white;
+    width: 50%;
+    padding: 4px;
+    font-size: 14px;
+    margin: 5px 5px;
+    overflow-wrap: break-word;
+    border-radius: 9px;
+  }
+
+  #chat-box {
+    padding: 5px 5px;
+    background: transparent;
+    color: white;
+    outline: none;
+    border: none;
+    border-bottom: 1px solid white;
+  }
+
+  .left {
+    float: left;
+    clear: both;
+  }
+
+  .right {
+    float: right;
+    clear: both;
+  }
+
+  .peoples {
+    height: 80vh;
+    /* 100% Full-height */
+    width: 300px;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Stay on top */
+    bottom: 0;
+    /* Stay at the top */
+    right: -500px;
+    background-color: #111;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    overflow-y: auto;
+    padding: 10px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidenav */
+    color: white;
+    text-align: center;
+  }
+
+  .people-l {
+    margin: 15px;
+    font-size: 15px;
+  }
+
+  .videonav {
+    height: 80vh;
+    /* 100% Full-height */
+    width: 300px;
+    /* 0 width - change this with JavaScript */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Stay on top */
+    bottom: 0;
+    /* Stay at the top */
+    right: -500px;
+    background-color: #111;
+    /* Black*/
+    overflow-x: hidden;
+    /* Disable horizontal scroll */
+    overflow-y: auto;
+    padding: 10px;
+    /* Place content 60px from the top */
+    transition: 0.5s;
+    /* 0.5 second transition effect to slide in the sidenav */
+    color: white;
+    text-align: center;
+  }
+
+  #myvideo {
+    display: none;
+    transition: 0.6s;
+    height: 214px;
+  }
+
+  #mypvideo {
+    height: 150px;
+    width: 200px;
+    background: #323232;
+  }
+
+  /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
+  @media screen and (max-height: 450px) {
+    .message {
+      padding-top: 15px;
+    }
+
+    .message a {
+      font-size: 18px;
+    }
+  }

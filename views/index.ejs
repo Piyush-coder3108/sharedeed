@@ -23,14 +23,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-item">
-            <li class="nav-item">
-              <a class="nav-link active " aria-current="page" href="#signupform">Sign In/Sign Up</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+       </div>
     </nav>
 
 <!-- Title Section -->
@@ -56,7 +49,7 @@
 
 
   <!--       Features Section      -->
-  <div class="container-fluid">
+  <div class="sections container-fluid">
     <h1>Why Us ?</h1>
     <div class="container-fluid features-section">
       <div class="card">
@@ -164,11 +157,11 @@
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" name="username" placeholder="Username" />
+              <input type="text" name="username" placeholder="Username" required="true"/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="password" placeholder="Password" required="true"/>
               
             </div>
             <input type="submit" value="Login" class="btn solid" />
@@ -177,21 +170,21 @@
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" name="username" placeholder="Username" />
+              <input type="text" name="username" placeholder="Username" required="true"/>
             </div>
             <div class="input-field">
                 <i class="fas fa-user"></i>
-                <input type="text" name="name" placeholder="Full name" />
+                <input type="text" name="name" placeholder="Full name" required="true"/>
               </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" name="email" placeholder="Email" />
+              <input type="email" name="email" placeholder="Email" required="true"/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="password" placeholder="Password" required="true"/>
             </div>
-            <input type="submit" class="btn" value="Sign up" />
+            <input type="submit" class="btn" value="Sign up"/>
           </form>
         </div>
       </div>

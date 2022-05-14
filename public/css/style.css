@@ -27,11 +27,6 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
-.container-fluid{
-  padding : 0;
-  margin: 0;
-}
-
 h1{
   padding : 50px 0px 0px;
   background-color:black;
@@ -39,7 +34,13 @@ h1{
   margin: 0;
 }
 
+.sections{
+  padding : 0;
+  margin: 0;
+}
+
 /* Navbar */
+
 .navbar-item{
   margin-right: 2%;
 }

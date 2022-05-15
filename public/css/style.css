@@ -27,20 +27,34 @@ input {
   font-family: "Poppins", sans-serif;
 }
 
+h1{
+  padding : 50px 0px 0px;
+  background-color:black;
+  color: #fff;  
+  margin: 0;
+}
+
+.sections{
+  padding : 0;
+  margin: 0;
+}
+
 /* Navbar */
+
 .navbar-item{
   margin-right: 2%;
 }
 
 /* Title Section */
 .title-section{
+  height: 100vh;
   background-color: #000;
   color: #fff;
   overflow-x: hidden;
 }
 
 .title-heading{
-  padding: 10rem 3rem;
+  padding: 10rem 3rem 0;
   word-wrap: break-word;
   line-height: 1.5;
 }
@@ -54,7 +68,72 @@ input {
   width: 80%;
   min-width: 3rem;
   height: auto;
-  padding: 5rem 3rem;
+  padding: 5rem 3rem 0;
+}
+
+/* get started button */
+.start-btn-div{
+  padding : 0;
+}
+
+.glow-on-hover {
+  width: 220px;
+  height: 50px;
+  border: none;
+  outline: none;
+  color: #fff;
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.glow-on-hover:before {
+  content: '';
+  background: linear-gradient(45deg, #ff0000, #ff7300, #fffb00, #48ff00, #00ffd5, #002bff, #7a00ff, #ff00c8, #ff0000);
+  position: absolute;
+  top: -2px;
+  left:-2px;
+  background-size: 400%;
+  z-index: -1;
+  filter: blur(5px);
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  animation: glowing 20s linear infinite;
+  opacity: 0;
+  transition: opacity .3s ease-in-out;
+  border-radius: 10px;
+}
+
+.glow-on-hover:active {
+  color: #000
+}
+
+.glow-on-hover:active:after {
+  background: transparent;
+}
+
+.glow-on-hover:hover:before {
+  opacity: 1;
+}
+
+.glow-on-hover:after {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: #111;
+  left: 0;
+  top: 0;
+  border-radius: 10px;
+}
+
+@keyframes glowing {
+  0% { background-position: 0 0; }
+  50% { background-position: 400% 0; }
+  100% { background-position: 0 0; }
 }
 
 /* Features Section */
@@ -107,6 +186,8 @@ input {
   top: 0;
   left: 0;
 }
+
+
 
 .signin-signup {
   position: absolute;
@@ -498,4 +579,116 @@ form.sign-in-form {
   .features-text{
     margin-bottom: 2rem;
   }
+}
+
+
+/*  */
+/* //////////features////////////// */
+
+/* body{
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: consolas;
+} */
+
+img{
+  border-radius : 100%
+}
+
+.features-section{
+  min-width: 100vh;
+  padding: 0%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+}
+
+.features-section .card{
+  position: relative;
+  cursor: pointer;
+  border-radius: 20%;
+}
+
+.features-section .card .face{
+  width: 300px;
+  height: 200px;
+  transition: 0.5s;
+}
+
+.features-section .card .face.face1{
+  position: relative;
+  background: rgb(0, 0, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+  transform: translateY(100px);
+}
+
+.features-section .card:hover .face.face1{
+  background: #ff0057;
+  transform: translateY(0);
+}
+
+.features-section .card .face.face1 .content{
+  opacity: 0.2;
+  transition: 0.5s;
+}
+
+.features-section .card:hover .face.face1 .content{
+  opacity: 1;
+}
+
+.features-section .card .face.face1 .content img{
+  max-width: 100px;
+}
+
+.features-section .card .face.face1 .content h3{
+  margin: 10px 0 0;
+  padding: 0;
+  /* color: #fff; */
+  text-align: center;
+  font-size: 1.5em;
+}
+
+.features-section .card .face.face2{
+  position: relative;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+  transform: translateY(-100px);
+}
+
+.features-section .card:hover .face.face2{
+  transform: translateY(0);
+}
+
+.features-section .card .face.face2 .content p{
+  color: #000;
+  margin: 0;
+  padding: 0;
+}
+
+.features-section .card .face.face2 .content a{
+  margin: 15px 0 0;
+  display:  inline-block;
+  text-decoration: none;
+  font-weight: 900;
+  color: #333;
+  padding: 5px;
+  border: 1px solid #333;
+}
+
+.features-section .card .face.face2 .content a:hover{
+  background: #333;
+  color: #000;
 }

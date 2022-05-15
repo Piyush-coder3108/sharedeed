@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
     <!-- Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     
     <script
       src="https://kit.fontawesome.com/64d58efce2.js"
@@ -23,14 +23,7 @@
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul class="navbar-nav ms-auto mb-2 mb-lg-0 navbar-item">
-            <li class="nav-item">
-              <a class="nav-link active " aria-current="page" href="#signupform">Sign In/Sign Up</a>
-            </li>
-          </ul>
-        </div>
-      </div>
+       </div>
     </nav>
 
 <!-- Title Section -->
@@ -43,13 +36,70 @@
       <img class="title-img" src="images/titleimg.png" alt="image"/>
     </div>
   </div>
+  <div class='row'>
+    <div class='start-btn-div col-lg-6 md-col-6 sm-col-12'>
+      <button class="glow-on-hover" type="button"><a href="#signupform">Get Started</a></button>
+    </div>
+  </div>
   
 </section>
 
+<hr style="height: 1px;color: #fff;margin:0;">
+
+
 
   <!--       Features Section      -->
+  <div class="sections container-fluid">
+    <h1>Why Us ?</h1>
+    <div class="container-fluid features-section">
+      <div class="card">
+        <div class="face face1">
+            <div class="content">
+                <img src="https://www.freepnglogos.com/uploads/share-png/share-share-online-sharing-social-social-share-icon-9.png">
+                <h3>Share</h3>
+            </div>
+        </div>
+        <div class="face face2">
+            <div class="content">
+                <p>Share code with your friends just by sharing the link with them.</p>
+                    <a href="#signupform">Lets Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="face face1">
+            <div class="content">
+                <img src="https://github.com/Jhonierpc/WebDevelopment/blob/master/CSS%20Card%20Hover%20Effects/img/code_128.png?raw=true">
+                <h3>Code</h3>
+            </div>
+        </div>
+        <div class="face face2">
+            <div class="content">
+                <p>Code along with your friends with our real time code editor.</p>
+                    <a href="#signupform">Lets Go</a>
+            </div>
+        </div>
+    </div>
+    <div class="card">
+        <div class="face face1">
+            <div class="content">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRgoEto5oM6N7bjFyKtU1-liDiyz7ANvnvvIg&usqp=CAU">
+                <h3>Save</h3>
+            </div>
+        </div>
+        <div class="face face2">
+            <div class="content">
+                <p>Save the documents you create. Find them here when you come back</p>
+                    <a href="#signupform">Lets Go</a>
+            </div>
+        </div>
+    </div>
+    </div>
+  </div>
 
-  <div class="container-fluid features-section">
+
+
+  <!-- <div class="container-fluid features-section">
     <div class="row features-row">
       <div class="col-lg-6 col-md-6 col-sm-6">
         <div  class="features-text">
@@ -91,7 +141,7 @@
       </div>
 
     </div>
-  </div>
+  </div> -->
 
 
   <hr style="height: 2px;color: #fff;margin:0;">
@@ -107,11 +157,11 @@
             <h2 class="title">Sign in</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" name="username" placeholder="Username" />
+              <input type="text" name="username" placeholder="Username" required="true"/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="password" placeholder="Password" required="true"/>
               
             </div>
             <input type="submit" value="Login" class="btn solid" />
@@ -120,21 +170,21 @@
             <h2 class="title">Sign up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" name="username" placeholder="Username" />
+              <input type="text" name="username" placeholder="Username" required="true"/>
             </div>
             <div class="input-field">
                 <i class="fas fa-user"></i>
-                <input type="text" name="name" placeholder="Full name" />
+                <input type="text" name="name" placeholder="Full name" required="true"/>
               </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" name="email" placeholder="Email" />
+              <input type="email" name="email" placeholder="Email" required="true"/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" name="password" placeholder="Password" />
+              <input type="password" name="password" placeholder="Password" required="true"/>
             </div>
-            <input type="submit" class="btn" value="Sign up" />
+            <input type="submit" class="btn" value="Sign up"/>
           </form>
         </div>
       </div>

@@ -32,8 +32,12 @@
         id="extension" data-bs-toggle="tooltip" data-bs-placement="bottom" title="File Extension">
       <ul class="navbar-nav  mb-2 mb-lg-0 ms-auto ">
         <li>
-          <a class="nav-link" href="#"><i data-bs-toggle="tooltip" data-bs-placement="bottom"
-              title="Run Code" onclick="runCode()">Run</i></a>
+          <a class="nav-link" href="#"><i data-bs-toggle="tooltip" data-bs-placement="bottom" title="Run Code"
+              onclick="runCode()">Run</i></a>
+        </li>
+        <li>
+          <a class="nav-link"><i data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy Code"
+              onclick="makeCopy()">Make a Copy</i></a>
         </li>
         <li>
           <a class="nav-link" href="#"><i class="fas fa-cloud-upload-alt" data-bs-toggle="tooltip"
@@ -140,32 +144,7 @@
                         <% } %>
 
                           <% } %>
-                            <!-- <option value="dracula" selected>dracula</option>
-                        <option value="ambiance">ambiance</option>
-                        <option value="chaos">chaos</option>
-                        <option value="clouds">clouds</option>
-                        <option value="cobalt">cobalt</option>
-                        <option value="dawn">dawn</option>                  
-                        <option value="eclipse">eclipse</option>
-                        <option value="gob">gob</option>
-                        <option value="github">github</option>
-                        <option value="iplastic">iplastic</option>
-                        <option value="kuroir">kuroir</option>
-                        <option value="merbivore">merbivore</option>
-                        <option value="mono_industrial">mono industrial</option>
-                        <option value="monokai">monokai</option>
-                        <option value="one_dark">one dark</option>                        
-                        <option value="solarized_dark">solarized dark</option>
-                        <option value="solarized_light">solarized light</option>
-                        <option value="terminal">terminal</option>
-                        <option value="textmate">textmate</option>
-                        <option value="tomorrow">tomorrow</option>
-                        <option value="tomorrow_night">tomorrow night</option>
-                        <option value="tomorrow_night_blue">tomorrow night blue</option>
-                        <option value="tomorrow_night_bright">tomorrow night bright</option>
-                        <option value="tomorrow_night_eighties">tomorrow night eighties</option>
-                        <option value="twilight">twilight</option>
-                        <option value="xcode">xcode</option> -->
+                          
                 </select>
                 <br>
                 <label for="tab-size" class="form-label">Tab Size: </label>
@@ -188,7 +167,7 @@
                   <br>
                   <label for="syntax" class="form-label">Syntax: </label>
                   <select class="form-select" id="syntax" aria-label="Default select example" onchange="changeMode()">
-                    <option value="temp" selected >Change extension</option>
+                    <option value="temp" selected>Change extension</option>
                     <option value="objectivec">C</option>
                     <option value="c_cpp">C++</option>
                     <option value="csharp">csharp</option>
@@ -246,7 +225,11 @@
 
               <% if(admin) { %>
                 <div class="tab-pane fade" id="v-pills-admin-setting" role="tabpanel"
-                  aria-labelledby="v-pills-admin-setting-tab">Admin Setting Page</div>
+                  aria-labelledby="v-pills-admin-setting-tab">
+                <div>Admin Setting Page</div>
+                <br></br>
+                <div><button type="button" class="btn btn-danger" onclick="deleteCode()">Delete your code<i class="fa-solid fa-trash-can"></i></button></div>
+                </div>
                 <% } %>
             </div>
           </div>
@@ -293,7 +276,7 @@
     document.getElementById('extension').disabled = true;
 
     // Getting site url
-    const url=window.location.href;
+    const url = window.location.href;
 
     var extensions = {
       "objectivec": ".c",
@@ -329,7 +312,7 @@
     }
     var ext = extensions['<%= syntax %>'];
     document.getElementById('extension').value = ext;
-    var mainSyntax='<%= syntax %>';
+    var mainSyntax = '<%= syntax %>';
 
     var admin = '<%= admin %>';
     const roomid = '<%= roomid %>';
@@ -413,25 +396,25 @@
       doc_title = title;
     })
 
-    function runCode(){
-      var x=document.createElement('TEXTAREA');
-      x.display="none";
-      x.value=editor.getValue();
+    function runCode() {
+      var x = document.createElement('TEXTAREA');
+      x.display = "none";
+      x.value = editor.getValue();
+      const data = JSON.stringify({
+        "code": `${x}`,
+        "language": `${syntax}`,
+        "input": ""
+      })
       const options = {
-        method: 'POST',
+        method: 'post',
         mode: 'cors',
-        body: {
-          "clientId": "c0c9fe76355f6e31a94db5ff3d81949e",
-          "clientSecret": "6d715651f9b95f1d826599387c5594793fdb241cc5bd64484e82290e45b4de5d",
-          "script": `${x.value}`,
-          "language": `${mainSyntax}`,
-          "versionIndex": "0"
-        },
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json; charset=UTF-8',
-        }
+        },
+        data: data
       };
-      fetch(`https://api.jdoodle.com/v1/execute`, options)
+      fetch(`https://codexweb.netlify.app/.netlify/functions/enforceCode`, options)
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -457,19 +440,53 @@
 
     }
 
-    function changeMode() {
-      var syntax = document.getElementById('syntax').value;
-      if(syntax==='temp'){
-        new Noty({
+    function makeCopy() {
+      const update = {
+        content: `${editor.getValue()}`,
+        extension: `${mainSyntax}`
+      };
+      const options = {
+        method: 'POST',
+        body: JSON.stringify(update),
+        headers: {
+          'Content-Type': 'application/json; charset=UTF-8',
+        }
+      };
+      fetch(`${url}/copy`, options)
+        .then(response => response.json())
+        .then(data => {
+          console.log(data);
+          if (data.success) {
+            const link = document.createElement('a');
+            link.id = 'someLink'; //give it an ID!
+            link.href = `${data.url}`; // New URL
+            link.click();
+          }
+          else {
+            new Noty({
               theme: 'relax',
-              text: "Please choose valid option !!!",
+              text: "Server error try again later",
               type: 'error',
               layout: 'topRight',
               timeout: 1500
             }).show();
+          }
+        });
+    }
+
+    function changeMode() {
+      var syntax = document.getElementById('syntax').value;
+      if (syntax === 'temp') {
+        new Noty({
+          theme: 'relax',
+          text: "Please choose valid option !!!",
+          type: 'error',
+          layout: 'topRight',
+          timeout: 1500
+        }).show();
         return;
       }
-      mainSyntax=syntax;
+      mainSyntax = syntax;
       ext = extensions[syntax];
       document.getElementById('extension').value = ext;
       editor.session.setMode(`ace/mode/${syntax}`);
@@ -481,12 +498,12 @@
 
     socket.on('mode-change', (syntax) => {
       new Noty({
-              theme: 'relax',
-              text: "Please Note: Admin changed the file extension",
-              type: 'success',
-              layout: 'topRight',
-              timeout: 1500
-            }).show();
+        theme: 'relax',
+        text: "Please Note: Admin changed the file extension",
+        type: 'success',
+        layout: 'topRight',
+        timeout: 1500
+      }).show();
       ext = extensions[syntax];
       document.getElementById('extension').value = ext;
       editor.session.setMode(`ace/mode/${syntax}`);
@@ -538,9 +555,37 @@
       let btn_tooltip = bootstrap.Tooltip.getInstance(document.getElementById('share'));
       btn_tooltip.show();
     }
+
     function outFunc() {
       document.getElementById('share').setAttribute('data-bs-original-title', 'Share');
     }
+
+    function deleteCode(){
+      socket.disconnect();
+      var new_url=url;
+      if(url.charAt(url.length-1)=='#'){
+        new_url=url.substring(0,url.length-1);
+      }
+      const link=`${new_url}/delete`;
+      console.log(link);
+      fetch(link)
+      .then(response => response.json())
+      .then(data=>{
+        if(data.success){
+          window.location.replace(`${url.substring(0,url.length-17)}`);
+        }
+        else{
+          new Noty({
+              theme: 'relax',
+              text: "Server error try again later",
+              type: 'error',
+              layout: 'topRight',
+              timeout: 1500
+            }).show();
+        }
+      })
+    }
+
 
     function download_file() {
       if (doc_title != undefined && doc_title.length > 0) {

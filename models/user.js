@@ -33,6 +33,20 @@ const userSchema=new mongoose.Schema({
             type: Number,
             default: 12
         }
+    },
+    friends:[
+        {
+            type: String
+        }
+    ],
+    Pending_req:[
+        {
+        type: String
+        }
+    ],
+    tut_done: {
+        type: Boolean,
+        default: 'false'
     }
 },{
     timestamps: true

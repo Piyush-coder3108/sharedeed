@@ -14,9 +14,8 @@ const cors=require('cors');
 
 require('./config/db')();
 
-
-// PeerJS middleware
-// app.use('/peerjs',peerServer);
+//cors
+app.use(cors());
 
 // cookie middleware
 app.use(cookieParser());
@@ -28,7 +27,7 @@ app.use(session({
 // Setting body-parser
 app.use(express.urlencoded({extended: true}));
 app.use(express.json());
-app.use(cors());
+
 
 
 

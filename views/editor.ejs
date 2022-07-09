@@ -31,13 +31,13 @@
       <input type="text" class="form-control" style="width: 100px; background: transparent;border: none;  color: white;"
         id="extension" data-bs-toggle="tooltip" data-bs-placement="bottom" title="File Extension">
       <ul class="navbar-nav  mb-2 mb-lg-0 ms-auto ">
-        <li>
+        <!-- <li>
           <a class="nav-link" href="#"><i data-bs-toggle="tooltip" data-bs-placement="bottom" title="Run Code"
               onclick="runCode()">Run</i></a>
-        </li>
+        </li> -->
         <li>
           <a class="nav-link"><i data-bs-toggle="tooltip" data-bs-placement="bottom" title="Copy Code"
-              onclick="makeCopy()">Make a Copy</i></a>
+              onclick="makeCopy()">Make copy</i></a>
         </li>
         <li>
           <a class="nav-link" href="#"><i class="fas fa-cloud-upload-alt" data-bs-toggle="tooltip"
@@ -386,7 +386,8 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newsetting),
       };
-      fetch('/change/editor/setting', opt)
+      const link=correctUrl(url)+'/change/editor/setting';
+      fetch(link, opt)
         .then(data => console.log(data))
         .catch(err => console.log(err));
     }
@@ -452,7 +453,8 @@
           'Content-Type': 'application/json; charset=UTF-8',
         }
       };
-      fetch(`${url}/copy`, options)
+      const link=correctUrl(url)+'/copy';
+      fetch(link, options)
         .then(response => response.json())
         .then(data => {
           console.log(data);
@@ -522,7 +524,8 @@
           'Content-Type': 'application/json; charset=UTF-8',
         }
       };
-      fetch(`${url}/data/update/ext`, options)
+      const link=correctUrl(url)+'/data/update/ext';
+      fetch(link, options)
         .then(response => response.json())
         .then(data => {
           if (data.success) {
@@ -562,12 +565,7 @@
 
     function deleteCode(){
       socket.disconnect();
-      var new_url=url;
-      if(url.charAt(url.length-1)=='#'){
-        new_url=url.substring(0,url.length-1);
-      }
-      const link=`${new_url}/delete`;
-      console.log(link);
+      const link=correctUrl(url)+'/delete';
       fetch(link)
       .then(response => response.json())
       .then(data=>{
@@ -646,7 +644,7 @@
         alert("Please made some changes !!!!");
         return;
       }
-
+      console.log("hello");
       save_doc_api_call();
 
     }
@@ -657,6 +655,7 @@
         'content': editor.getValue(),
         'user': username,
       };
+      console.log(update);
       const options = {
         method: 'POST',
         headers: {
@@ -664,7 +663,8 @@
         },
         body: JSON.stringify(update),
       };
-      const response = await fetch(`${url}/data`, options);
+      const link=correctUrl(url)+'/data';
+      const response = await fetch(link, options);
       const data = await response.json();
       window.removeEventListener('beforeunload', before_unload);
       if (data.success) {
@@ -742,6 +742,15 @@
         document.getElementById('people-list').append(newdiv);
       }
     })     
+
+    function correctUrl(url){
+      var new_url=url;
+      if(url.charAt(url.length-1)=='#'){
+        new_url=url.substring(0,url.length-1);
+      }
+      return new_url;
+    }
+
   </script>
 
 </body>
